@@ -68,6 +68,10 @@ export default {
     '@/assets/scss/style.scss',
   ],
 
+  auth: {
+    
+  },
+
   styleResources: {
     scss: [
       './assets/scss/cobDS-tokens.scss',
