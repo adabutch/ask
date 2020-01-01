@@ -1,6 +1,6 @@
-# askTheMayor
+# ask
 
-> An application to ask the Mayor questions.
+> Ask a question
 
 ## Build Setup
 
