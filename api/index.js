@@ -40,13 +40,13 @@ app.use(function (req, res, next) {
 });
 
 app.use(bodyParser.urlencoded());
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 
-app.get('/api', function (req, res) {
+app.get('/api', (req, res) => {
   res.send('api');
 });
 
-app.get('/api/questions', function (req, res) {
+app.get('/api/questions', (req, res) => {
   db.collection('ask', (err, collection) => {
     if (err) throw err;
     
@@ -59,33 +59,38 @@ app.get('/api/questions', function (req, res) {
   });
 });
 
-app.post('/api/question', function(req, res) {
-  // console.log(req)
-  // Insert JSON straight into MongoDB
-  db.collection('ask').insertOne(req.body, function (err, result) {
+app.post('/api/question', (req, res) => {
+  let data = { ...req.body, 
+                  "askDate": new Date() };
+
+  db.collection('ask')
+  .insertOne(data, (err, result) => {
     if (err) {
       console.log('Post Error', err)
-      res.send('Post Error');
+      res.send('Post Error', err);
     }
     else {
-      console.log('Post Success', res.body)
+      console.log('Post Success')
       res.send('Post Success');
     }
   });
 });
 
-app.post('/api/question/delete/',function(req, res){
-  console.log(req.body._id)
-  // ObjectID is not defined
-  // db.collection("ask").deleteOne({_id: new ObjectID(req.body._id)}, function (err, data) {
-  //   if(err != null){
-  //     return console.log(err)
-  //   }
-  //   res.send(data);
-  //   console.log(data);
-  // });
+app.delete('/api/question/:questionID', (req, res) => {
+  let questionID = req.params.questionID;
+
+  db.collection("ask")
+  .deleteOne({_id: ObjectID(questionID)}, (err, data) => {
+    
+    if(err != null){
+      return console.log(err)
+    }
+    
+    res.send(data);
+    console.log(data);
+  });
 })
 
-app.listen(3000, function () {
+app.listen(3000, () => {
   console.log('Example app listening on port 3000!');
 });

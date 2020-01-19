@@ -7,8 +7,8 @@
           Name</label>
         <input
           type="text"
-          v-model="formData['name']"
-          name="name" />
+          v-model="formData['author']"
+          name="author" />
       </div>
 
       <div class="form-elm-wrap">
@@ -32,9 +32,14 @@
           <span>
             <strong>ID:</strong>
             {{ q._id }}</span><br>
+          <template v-if="q.askDate">
+            <span>
+              <strong>Asked on:</strong>
+              {{ formatDate(q.askDate) }}</span><br>
+          </template>
           <span>
-            <strong>Name:</strong>
-            {{ q.name }}</span><br>
+            <strong>Question by:</strong>
+            {{ q.author }}</span><br>
           <span>
             <strong>Question:</strong>
             {{ q.question }}</span>
@@ -48,6 +53,8 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
   components: {},
   data() {
@@ -64,7 +71,15 @@ export default {
   created() {
     this.getQuestions();
   },
+  computed: {
+    askDate() {
+      return this.formData.askDate = 12;
+    }
+  },
   methods: {
+    formatDate(date) {
+      return moment(date).format("dddd, MMMM Do YYYY, h:mm:ss a");
+    },
     formSubmit(data) {
       this.postQuestion(data);
     },
@@ -85,7 +100,7 @@ export default {
     },
     deleteQuestion(data) {
       console.log(data)
-      this.$axios.post(`${this.api}question/delete`, data)
+      this.$axios.delete(`${this.api}question/${data}`, data)
       .then((res)   => {
         this.getQuestions();
       })

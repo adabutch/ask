@@ -33,6 +33,7 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    { src:          '~/plugins/design-system' }
   ],
   /*
   ** Nuxt.js dev-modules
