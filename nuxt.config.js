@@ -1,13 +1,42 @@
 
 module.exports = {
   mode: 'universal',
+  
   server: {
-    port: 8000, // default: 3000
+    port: 8000,
+  },
+
+  auth: {
+    strategies: {
+      local: {
+        endpoints: {
+          logout: false,
+          login: { 
+            url:            '/user/login',
+            method:         'post',
+            propertyName:   'token'
+          },
+          user: {
+            url:            '/user/user',
+            method:         'get',
+            propertyName:   'data'},
+        },
+        tokenRequired:  true,
+        tokenType:      'Bearer'
+      },
+      google: {
+        client_id: 'your gcloud oauth app client id'
+      },
+    },
+
+    redirect: {
+      login: '/?login=1',
+      logout: '/',
+      user: '/profile',
+      callback:'/'
+    }
   },
   
-  /*
-  ** Headers of the page
-  */
   head: {
     title: process.env.npm_package_name || '',
     meta: [
@@ -19,54 +48,40 @@ module.exports = {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
-
-  /*
-  ** Customize the progress-bar color
-  */
+  
   loading: { color: '#fff' },
-  /*
-  ** Global CSS
-  */
-  css: [
-  ],
-  /*
-  ** Plugins to load before mounting the App
-  */
+  
+  css: ['~assets/scss/style.scss'],
+
+  styleResources: {
+    scss: [
+      './assets/scss/*.scss'
+    ]
+  },
+  
   plugins: [
     { src:          '~/plugins/design-system' }
   ],
-  /*
-  ** Nuxt.js dev-modules
-  */
-  buildModules: [
-  ],
-  /*
-  ** Nuxt.js modules
-  */
+  
+  buildModules: [],
+
   modules: [
-    // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
+    '@nuxtjs/auth',
     '@nuxtjs/pwa',
-    // Doc: https://github.com/nuxt-community/dotenv-module
     '@nuxtjs/dotenv',
+    '@nuxtjs/style-resources'
   ],
   serverMiddleware: [
-    // API middleware
     '~/api/index.js'
   ],
-  /*
-  ** Axios module configuration
-  ** See https://axios.nuxtjs.org/options
-  */
+
+  /* https://axios.nuxtjs.org/options */
   axios: {
+    baseURL: 'http://localhost:3000/api/',
   },
-  /*
-  ** Build configuration
-  */
+  
   build: {
-    /*
-    ** You can extend webpack config here
-    */
     extend (config, ctx) {
     }
   }

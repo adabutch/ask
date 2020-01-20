@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="layout-default">
     <div><headerComponent /></div>
     <nuxt />
   </div>
@@ -9,9 +9,14 @@
 import headerComponent  from '~/components/headerComponent'
 
 export default {
+  // middleware: 'auth',
   components: { headerComponent },
 }
 </script>
 
-<style>
+<style lang="scss">
+.layout-default {
+  position: relative;
+  top: 90px;
+}
 </style>

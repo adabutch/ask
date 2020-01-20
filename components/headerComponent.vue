@@ -2,23 +2,25 @@
   <div>
     <example-header
       :logo="{
-        url:          `${cityWebsiteUrl }`,
-        image:        `${headerLogo}`,
-        imageAlt:     `${cityName}`
+        url:          `${ logoUrl }`,
+        image:        `${ logoPath }`,
+        imageAlt:     `${ logoDescription }`
       }"
 
       :logoHeadings="{
-        topHeading:   `${logoHeading}`,
-        subHeading:   `${logoSubHeading}`,
+        topHeading:   `${ logoHeading }`,
+        subHeading:   `${ logoSubHeading }`,
       }"
 
       :application="{
-        name:         `${appName}`,
-        url:          frontendAppUrl
+        name:         `${ appName }`,
+        url:          `${ appDirectory }`
       }">
     </example-header>
   </div>
 </template>
+
+
 
 <script>
 import exampleHeader  from '~/components/design-system/exampleHeader'
@@ -28,21 +30,26 @@ import exampleHeader  from '~/components/design-system/exampleHeader'
 export default {
   components: {exampleHeader},
   data() {
-    return {}
+    return {
+      logoUrl:          '#',
+      logoPath:         'city-of-bloomington-logo.svg',
+      logoDescription:  '',
+      logoHeading:      'Bloomington.in.gov',
+      logoSubHeading:   'John Hamilton, Mayor',
+
+      appName:          'Ask The Mayor',
+      appDirectory:     '/test',
+    }
   },
   computed: {
-    // ...mapFields([
-    //   'auth.authUser'
-    // ]),
-    // fullName() {
-    //   return `${this.authUser.user.firstname} ${this.authUser.user.lastname}`
-    // }
   }
 }
 </script>
 
 <style lang="scss" scoped>
   header {
+    position: fixed;
+    top: 0;
     padding: 15px 20px !important;
     border-bottom: 1px solid $color-grey;
 
