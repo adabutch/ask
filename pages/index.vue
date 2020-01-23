@@ -1,6 +1,10 @@
 <template>
   <div id="homepage">
 
+    <div style="background: blue: padding: 20px;">
+      <div id="my-signin2"></div>
+    </div>
+
     <form>
        <fn1-input
           v-model="formData['author']"
@@ -68,6 +72,7 @@ export default {
   components: {},
   data() {
     return {
+      user:       null,
       api:        'http://localhost:3000/api/',
       formData:   {},
       questions:  {
@@ -80,12 +85,55 @@ export default {
   created() {
     this.getQuestions();
   },
+  mounted() {
+    this.renderButton();
+  },
   computed: {
     askDate() {
       return this.formData.askDate = 12;
     }
   },
   methods: {
+    // onSignIn(googleUser){
+    //   this.$auth.loginWith("google")
+    //   .then((res) => {
+    //     console.log("Logged in! ", res);
+    //   })
+    //   .catch((e) => {
+    //     console.log(e);
+    //   });
+    //   // var profile = googleUser.getBasicProfile();
+    //   //   console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+    //   //   console.log('Full Name: ' + profile.getName());
+    //   //   console.log('Given Name: ' + profile.getGivenName());
+    //   //   console.log('Family Name: ' + profile.getFamilyName());
+    //   //   console.log("Image URL: " + profile.getImageUrl());
+    //   //   console.log("Email: " + profile.getEmail());
+
+    //   //   // The ID token you need to pass to your backend:
+    //   //   var id_token = googleUser.getAuthResponse().id_token;
+    //   //   console.log("ID Token: " + id_token);
+    // },
+    onSuccess(googleUser) {
+
+      this.user = googleUser;
+      
+      console.log('Logged in as: ' + googleUser);
+    },
+    onFailure(error) {
+      console.log(error);
+    },
+    renderButton() {
+      gapi.signin2.render('my-signin2', {
+        'scope': 'profile email',
+        'width': 240,
+        'height': 50,
+        'longtitle': true,
+        'theme': 'dark',
+        'onsuccess': this.onSuccess(),
+        'onfailure': this.onFailure(),
+      });
+    },
     formatDate(date) {
       return moment(date).format("dddd, MMMM Do YYYY, h:mm:ss a");
     },
